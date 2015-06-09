@@ -1,8 +1,9 @@
 #!/bin/bash
 set -x
-set -e
 
+# cp errors if there is a directory, even though we don't want to copy directories
 cp /src/* /build
+set -e
 chown -R nobody. /build
 if [[ $1 == update ]]
 then
