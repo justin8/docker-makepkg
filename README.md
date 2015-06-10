@@ -1,9 +1,13 @@
-##Docker makepkg##
+#Docker makepkg#
 [![Build Status](https://jenkins.dray.be/buildStatus/icon?job=docker_makepkg)](https://jenkins.dray.be/job/docker_makepkg)
 
-This is a docker image for building Arch Linux packages in a clean container. New versions will be uploaded to the Docker registry the day after justin8/archlinux builds
+This is a docker image for building Arch Linux packages in a clean container.
 
-#Usage#
+##Release schedule##
+ New versions will be uploaded to the Docker registry the day after justin8/archlinux builds. Usually the second of each month.
+
+
+##Usage##
 The included dmakepkg script will wrap this image nicely and clean up after itself and is therefore the recommended way to use this docker image.
 the final package file will be placed in the current directory when run with dmakepkg and can be used as a drop in replacement for local makepkg.
 
