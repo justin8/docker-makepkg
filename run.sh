@@ -13,7 +13,7 @@ else
 	then
 		flags=$@
 	else
-		flags='-fs --noconfirm'
+		flags='--force --syncdeps --noconfirm'
 	fi
 fi
 
