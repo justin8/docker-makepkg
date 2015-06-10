@@ -4,7 +4,7 @@
 This is a docker image for building Arch Linux packages in a clean container.
 
 ##Release schedule##
- New versions will be uploaded to the Docker registry the day after justin8/archlinux builds. Usually the second of each month.
+New versions will be uploaded to the Docker registry the day after justin8/archlinux builds. Usually the second of each month. No tagged releases will be made. Only latest as is usual for Arch dev tools.
 
 
 ##Usage##
