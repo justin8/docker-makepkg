@@ -7,10 +7,15 @@ set +e
 # Using -e instead of -d incase it is a symlink
 [[ -e '/var/cache/pacman/pkg' ]] && CACHE="-v /var/cache/pacman/pkg:/var/cache/pacman/pkg" || CACHE=""
 
+cleanup() {
+	docker rm $name
+}
+
+trap cleanup SIGINT SIGTERM
 docker run --name $name \
 	   -v $(pwd):/src \
            $CACHE \
            -v /etc/makepkg.conf:/etc/makepkg.conf \
            justin8/makepkg $@
 
-docker rm $name
+cleanup
