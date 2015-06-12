@@ -4,9 +4,12 @@ set -e
 name=$(basename $0)_$(uuidgen)
 set +e
 
+# Using -e instead of -d incase it is a symlink
+[[ -e '/var/cache/pacman/pkg' ]] && CACHE="-v /var/cache/pacman/pkg:/var/cache/pacman/pkg" || CACHE=""
+
 docker run --name $name \
 	   -v $(pwd):/src \
-           -v /var/cache/pacman/pkg:/var/cache/pacman/pkg \
+           $CACHE \
            -v /etc/makepkg.conf:/etc/makepkg.conf \
            justin8/makepkg $@
 
