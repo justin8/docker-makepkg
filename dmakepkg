@@ -17,5 +17,7 @@ docker run --name $name \
            $CACHE \
            -v /etc/makepkg.conf:/etc/makepkg.conf \
            justin8/makepkg $@
+rc=$?
 
 cleanup
+exit $rc
