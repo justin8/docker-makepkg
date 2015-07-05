@@ -21,4 +21,4 @@ fi
 su nobody -s /bin/bash -c "makepkg $flags"
 
 # Don't fail if there is no pkg but custom flags were specified. i.e. -cors will only test, but not create a package
-cp /build/*pkg.tar* /src || [[ -n $@ ]]
+cp /build/*pkg.tar* /src &>/dev/null || [[ -n $@ ]]
