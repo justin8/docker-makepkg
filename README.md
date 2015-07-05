@@ -13,6 +13,8 @@ the final package file will be placed in the current directory when run with dma
 
 The default flags sent to makepkg is `--force --syncdeps --noconfirm`
 Both the dmakepkg and running the image directly support overriding default flags. Any additional flags at the end will be passed directly to makepkg instead of the ones outlined above.
-It is also possible to pass the word `update` as the only argument (others after are ignored in this case). This will run a pacman -Syu before building the package. Useful if you haven't updated the master image yet but need to build against the latest libraries.
+Passing '-p' will run a pacman -Syu before building the package. Useful if you haven't updated the master image yet but need to build against the latest libraries.
+Passing '-u' will let you specify a UID to chown the file to before outputting it again. '-g' will let you also set the group (but requires -u as well or it will be ignored'
+All remaining parameters will be passed directly through to makepkg.
 
-The image can  also be run manually. You need to bind the source directory with a PKGBUILD to /src (e.g. `-v $(pwd):/src` to mount current directory). The final package file will be placed in the bound directory.
+The image can  also be run manually. You need to bind the source directory with a PKGBUILD to /src (e.g. `-v $(pwd):/src` to mount current directory). The final package file will be placed in the bound directory, no other files will be modified

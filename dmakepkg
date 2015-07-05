@@ -13,10 +13,10 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 docker run --name $name \
-	   -v $(pwd):/src \
+           -v $(pwd):/src \
            $CACHE \
            -v /etc/makepkg.conf:/etc/makepkg.conf \
-           justin8/makepkg $@
+           justin8/makepkg -u $EUID -g $(id -g $EUID) $@
 rc=$?
 
 cleanup
