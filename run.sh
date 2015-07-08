@@ -1,6 +1,4 @@
 #!/bin/bash
-set -x
-
 usage() {
 	cat <<-EOF
 	usage: $(basename "$0") [OPTIONS] [makepkg parameters]
