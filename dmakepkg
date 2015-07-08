@@ -3,9 +3,21 @@
 set -e
 name=$(basename $0)_$(uuidgen)
 set +e
+CACHE=''
+MAKEPKG=''
+SRCDEST=''
 
 # Using -e instead of -d incase it is a symlink
-[[ -e '/var/cache/pacman/pkg' ]] && CACHE="-v /var/cache/pacman/pkg:/var/cache/pacman/pkg" || CACHE=""
+[[ -e '/var/cache/pacman/pkg' ]] && CACHE='-v /var/cache/pacman/pkg:/var/cache/pacman/pkg'
+
+if [[ -f '/etc/makepkg.conf' ]]
+then
+	MAKEPKG='-v /etc/makepkg.conf:/etc/makepkg.conf'
+	srcdest_path=$(grep '^\s*SRCDEST=' /etc/makepkg.conf | cut -d= -f2)
+	if [[ -n $srcdest_path ]]; then
+		SRCDEST="-v ${srcdest_path}:${srcdest_path}"
+	fi
+fi
 
 cleanup() {
 	docker rm $name
@@ -15,7 +27,8 @@ trap cleanup SIGINT SIGTERM
 docker run --name $name \
            -v $(pwd):/src \
            $CACHE \
-           -v /etc/makepkg.conf:/etc/makepkg.conf \
+	   $MAKEPKG \
+	   $SRCDEST \
            justin8/makepkg -u $EUID -g $(id -g $EUID) $@
 rc=$?
 
