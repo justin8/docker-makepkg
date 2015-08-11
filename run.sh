@@ -34,6 +34,12 @@ do
 done
 shift $(( OPTIND -1 ))
 
+if ! [[ -f /src/PKGBUILD ]]
+then
+	echo "No PKGBUILD file found! Aborting."
+	exit 1
+fi
+
 # cp errors if there is a directory, even though we don't want to copy directories
 cp /src/* /build
 set -e
