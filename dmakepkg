@@ -19,12 +19,9 @@ then
 	fi
 fi
 
-cleanup() {
-	docker rm $name
-}
-
-trap cleanup SIGINT SIGTERM
 docker run --name $name \
+	   --rm \
+	   --net=host \
            -v $(pwd):/src \
            $CACHE \
 	   $MAKEPKG \
@@ -32,5 +29,4 @@ docker run --name $name \
            justin8/makepkg -u $EUID -g $(id -g $EUID) $@
 rc=$?
 
-cleanup
 exit $rc
