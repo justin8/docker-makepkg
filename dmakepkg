@@ -7,26 +7,79 @@ CACHE=''
 MAKEPKG=''
 SRCDEST=''
 
+usage() {
+	cat <<-EOF
+	usage: $(basename "$0") [option] [makepkg options]
+
+	Options:
+	-x	Use host system's /etc/pacman.conf
+
+	Any non-listed flag will be automatically passed through to makepkg
+	with no alterations.
+	EOF
+}
+CACHE=''
+CONF=''
+MAKEPKG=''
+
+while getopts ":hx" OPTION
+do
+	case $OPTION in
+		h)
+			usage
+			;;
+		x)
+			[[ -e '/etc/pacman.conf' ]] && CONF='-v /etc/pacman.conf:/etc/pacman.conf'
+			;;
+	esac
+done
+
+shift $(( OPTIND - 1 ))
+
 # Using -e instead of -d incase it is a symlink
 [[ -e '/var/cache/pacman/pkg' ]] && CACHE='-v /var/cache/pacman/pkg:/var/cache/pacman/pkg'
 
 if [[ -f '/etc/makepkg.conf' ]]
 then
 	MAKEPKG='-v /etc/makepkg.conf:/etc/makepkg.conf'
+
+	SRCDEST=''
 	srcdest_path=$(grep '^\s*SRCDEST=' /etc/makepkg.conf | cut -d= -f2)
 	if [[ -n $srcdest_path ]]; then
 		SRCDEST="-v ${srcdest_path}:${srcdest_path}"
+	fi
+
+	PKGDEST=''
+	pkgdest_path=$(grep '^\s*PKGDEST=' /etc/makepkg.conf | cut -d= -f2)
+	if [[ -n $pkgdest_path ]]; then
+		PKGDEST="-v ${pkgdest_path}:${pkgdest_path}"
+	fi
+
+	SRCPKGDEST=''
+	srcpkgdest_path=$(grep '^\s*SRCPKGDEST=' /etc/makepkg.conf | cut -d= -f2)
+	if [[ -n $srcpkgdest_path ]]; then
+		SRCPKGDEST="-v ${srcpkgdest_path}:${srcpkgdest_path}"
+	fi
+
+	LOGDEST=''
+	logdest_path=$(grep '^\s*LOGDEST=' /etc/makepkg.conf | cut -d= -f2)
+	if [[ -n $logdest_path ]]; then
+		LOGDEST="-v ${logdest_path}:${logdest_path}"
 	fi
 fi
 
 docker run --name $name \
 	   --rm \
 	   --net=host \
-           -v $(pwd):/src \
-           $CACHE \
+	   -v $(pwd):/src \
+	   $CACHE \
+	   $CONF \
 	   $MAKEPKG \
 	   $SRCDEST \
-           justin8/makepkg -u $EUID -g $(id -g $EUID) $@
+	   $PKGDEST \
+	   $SRCPKGDEST \
+	   $LOGDEST \
+	   justin8/makepkg -u $EUID -g $(id -g $EUID) $@
 rc=$?
 
 exit $rc
