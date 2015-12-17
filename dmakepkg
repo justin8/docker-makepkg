@@ -75,13 +75,13 @@ docker run --name "$name" \
 	   --rm \
 	   --net=host \
 	   -v $(pwd):/src \
-	   "$CACHE" \
-	   "$CONF" \
-	   "$MAKEPKG" \
-	   "$SRCDEST" \
-	   "$PKGDEST" \
-	   "$SRCPKGDEST" \
-	   "$LOGDEST" \
+	   $CACHE \
+	   $CONF \
+	   $MAKEPKG \
+	   $SRCDEST \
+	   $PKGDEST \
+	   $SRCPKGDEST \
+	   $LOGDEST \
 	   justin8/makepkg -u "$EUID" -g "$(id -g $EUID)" "$@"
 rc=$?
 
