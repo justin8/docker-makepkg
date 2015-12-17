@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-name=$(basename $0)_$(uuidgen)
+name="$(basename $0)_$(uuidgen)"
 set +e
 CACHE=''
 MAKEPKG=''
@@ -27,6 +27,9 @@ do
 	case $OPTION in
 		h)
 			usage
+			echo '---------------------------------------'
+			docker run --rm --name=$name justin8/makepkg -h
+			exit 0
 			;;
 		x)
 			[[ -e '/etc/pacman.conf' ]] && CONF='-v /etc/pacman.conf:/etc/pacman.conf'
@@ -68,18 +71,18 @@ then
 	fi
 fi
 
-docker run --name $name \
+docker run --name "$name" \
 	   --rm \
 	   --net=host \
 	   -v $(pwd):/src \
-	   $CACHE \
-	   $CONF \
-	   $MAKEPKG \
-	   $SRCDEST \
-	   $PKGDEST \
-	   $SRCPKGDEST \
-	   $LOGDEST \
-	   justin8/makepkg -u $EUID -g $(id -g $EUID) $@
+	   "$CACHE" \
+	   "$CONF" \
+	   "$MAKEPKG" \
+	   "$SRCDEST" \
+	   "$PKGDEST" \
+	   "$SRCPKGDEST" \
+	   "$LOGDEST" \
+	   justin8/makepkg -u "$EUID" -g "$(id -g $EUID)" "$@"
 rc=$?
 
 exit $rc

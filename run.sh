@@ -3,7 +3,7 @@ usage() {
 	cat <<-EOF
 	usage: $(basename "$0") [OPTIONS] [makepkg parameters]
 
-	This wrapper for makepkg will default to running with '--force --syncdesp --noconfirm'.
+	This wrapper for makepkg will default to running with '--force --syncdeps --noconfirm'.
 	Any unrecognized parameters will be passed directly through to makepkg.
 
 	OPTIONS:
