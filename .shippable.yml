@@ -1,0 +1,18 @@
+language: none
+
+build:
+    pre_ci:
+        - env
+        - image=${REPO_NAME#*-}
+        - echo $image
+        - docker build --no-cache -t justin8/$image .
+        - docker images
+    push:
+        - image=${REPO_NAME#*-}
+        - echo "Pushing justin8/$image:$version"
+        - docker push justin8/$image:latest
+
+integrations:
+    hub:
+        - integrationName: dockerhub
+          type: docker
