@@ -1,4 +1,4 @@
-FROM justin8/archlinux
+FROM archlinux
 MAINTAINER justin@dray.be
 
 RUN mkdir -p /build
